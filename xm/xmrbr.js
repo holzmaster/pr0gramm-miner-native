@@ -5,24 +5,21 @@
 const username = process.env["PR0GRAMM_USER"] || "holzmaster";
 console.log("User %s will receive mining rewards", username);
 
+
 const net = require('net');
 const WebSocket = require('ws');
 const util = require('util');
-const events = require('events');
+const EventEmitter = require('events');
 const readline = require('readline');
 
 let curjob = null;
+const port = 12345;
 
-const master = function () {
-	events.call(this);
-};
-
-util.inherits(master, events);
-
-master.prototype.updateit = function(data) {
-	this.emit('update');
-};
-
+class master extends EventEmitter {
+	updateit() {
+		this.emit("update");
+	}
+}
 const masterstream = new master();
 
 let resultcache = [];
@@ -149,5 +146,6 @@ const server = net.createServer(function (socket) {
 		console.log('Unknown line from client:', line);
 	});
 });
+server.listen(port);
 
-server.listen(12345);
+console.log("Proxy listening on port %d", port)
