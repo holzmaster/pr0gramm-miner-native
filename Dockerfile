@@ -17,14 +17,14 @@ RUN apt-get install -y --no-install-recommends nodejs libuv1-dev
 
 RUN npm -g i forever
 
-ADD xm /xm
-WORKDIR /xm
-RUN npm i
-
 RUN git clone https://github.com/Fusl/xmrig /xmrig
 WORKDIR /xmrig
 RUN cmake .
 RUN make
+
+ADD xm /xm
+WORKDIR /xm
+RUN npm i
 
 ADD run.sh /xmrig
 
