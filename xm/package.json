@@ -1,0 +1,13 @@
+{
+  "name": "pr0gramm-miner-native",
+  "version": "1.0.0",
+  "description": "",
+  "main": "xmrbr.js",
+  "author": "Fusl",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "readline": "^1.3.0",
+    "ws": "^3.0.0"
+  }
+}
