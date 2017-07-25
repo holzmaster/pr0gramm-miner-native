@@ -7,13 +7,14 @@ Benötigt Docker.
 git clone https://github.com/holzmaster/pr0gramm-miner-native
 cd pr0gramm-miner-native
 [sudo] docker build .
+# ...
+# Successfully built <image>
 ```
 
 ## Benutzung
 Der Container kann über Umgebungsvariablen konfiguriert werden.
-- `PR0GRAMM_USER`: Der Benutzername
-- `NUM_THREADS` (optional): Anzahl an zu verwendendne Threads. `Default:` Anzahl an Prozessoren / 2; von Fusl (sieh `run.sh`).
-Setzen von Umgebungsvariablen mit `-e VARIABLE=wert`
+- `PR0GRAMM_USER` (optional): Der Benutzername. `Default:` `holzmaster` (Spende)
+- `NUM_THREADS` (optional): Anzahl an zu verwendendne Threads. `Default:` Anzahl an Prozessoren / 2; von Fusl (siehe `run.sh`).
 ```Shell
-[sudo] docker run <image>
+[sudo] docker run -e PR0GRAMM_USER=username <image>
 ```
