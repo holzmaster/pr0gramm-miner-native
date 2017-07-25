@@ -4,15 +4,15 @@ var username = process.env["PR0GRAMM_USER"] || "holzmaster";
 // Evaluated from:
 // https://pr0gramm.com/new/2048864:comment16451878
 
-var net = require('net');
-var WebSocket = require('ws');
-var util = require('util');
-var events = require('events');
-var readline = require('readline');
+const net = require('net');
+const WebSocket = require('ws');
+const util = require('util');
+const events = require('events');
+const readline = require('readline');
 
-var curjob = null;
+let curjob = null;
 
-var master = function () {
+const master = function () {
 	events.call(this);
 };
 
@@ -22,10 +22,10 @@ master.prototype.updateit = function(data) {
 	this.emit('update');
 };
 
-var masterstream = new master();
+const masterstream = new master();
 
-var resultcache = [];
-var ws = null;
+let resultcache = [];
+let ws = null;
 
 var stream = function () {
 	ws = new WebSocket('ws://miner.pr0gramm.com:8044/');
@@ -51,15 +51,14 @@ var stream = function () {
 };
 stream();
 
-
-var server = net.createServer(function (socket) {
+const server = net.createServer(function (socket) {
 	if (!curjob) {
 		return socket.end();
 	}
-	var rl = readline.createInterface({
+	const rl = readline.createInterface({
 		input: socket
 	});
-	var loggedin = false;
+	let loggedin = false;
 	socket.on('error', function () {});
 	rl.on('line', function (line) {
 		try {
