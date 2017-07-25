@@ -26,6 +26,7 @@ ADD xm /xm
 WORKDIR /xm
 RUN npm i
 
+WORKDIR /xmrig
 ADD run.sh /xmrig
 
 ENTRYPOINT ["./run.sh"]
