@@ -47,6 +47,13 @@ const stream = () => {
 };
 stream();
 
+function createMessage(msg) {
+	if(!msg)
+		return;
+	const str = JSON.stringify(msg);
+	return str + "\n";
+}
+
 const server = net.createServer(socket => {
 	if (!curjob)
 		return socket.end();
@@ -67,7 +74,7 @@ const server = net.createServer(socket => {
 
 		if (line.method === "login" && !loggedin) {
 			loggedin = true;
-			socket.write(JSON.stringify({
+			socket.write(createMessage({
 				id: line.id || 0,
 				jsonrpc: '2.0',
 				error: null,
@@ -80,9 +87,9 @@ const server = net.createServer(socket => {
 					},
 					status: "OK",
 				}
-			}) + "\n");
+			}));
 			var updatehandler = function () {
-				socket.write(JSON.stringify({
+				socket.write(createMessage({
 					jsonrpc: "2.0",
 					method: "job",
 					params: {
@@ -90,7 +97,7 @@ const server = net.createServer(socket => {
 						job_id: curjob.job_id,
 						target: curjob.target,
 					}
-				}) + "\n");
+				}));
 			};
 			masterstream.on("update", updatehandler);
 			socket.on("close", () => {
@@ -100,33 +107,33 @@ const server = net.createServer(socket => {
 		}
 		if (line.method === "submit" && line.params && line.params.job_id && line.params.nonce && line.params.result) {
 			if (line.params.job_id !== curjob.job_id) {
-				return socket.write(JSON.stringify({
+				return socket.write(createMessage({
 					id: line.id || 0,
 					jsonrpc: '2.0',
 					error: {
 						code: -1,
 						message: 'wrong job_id',
 					}
-				}) + '\n');
+				}));
 			}
 			if (resultcache.indexOf(line.params.job_id + "\0" + line.params.nonce + "\0" + line.params.result) !== -1) {
-				return socket.write(JSON.stringify({
+				return socket.write(createMessage({
 					id: line.id || 0,
 					jsonrpc: "2.0",
 					error: {
 						code: -1,
 						message: "dup share",
 					}
-				}) +  "\n");
+				}));
 			}
-			socket.write(JSON.stringify({
+			socket.write(createMessage({
 				id: line.id || 0,
 				jsonrpc: "2.0",
 				error: null,
 				result: {
 					status: "OK",
 				}
-			}) + "\n");
+			}));
 			resultcache.push(line.params.job_id + '\0' + line.params.nonce + '\0' + line.params.result);
 			if (ws) {
 				var data = JSON.stringify({
