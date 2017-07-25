@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+// Evaluated from: https://pr0gramm.com/new/2048864:comment16451878
+// Thanks to: Fusl
 
-var username = process.env["PR0GRAMM_USER"] || "holzmaster";
-// Evaluated from:
-// https://pr0gramm.com/new/2048864:comment16451878
+const username = process.env["PR0GRAMM_USER"] || "holzmaster";
+console.log("User %s will receive mining rewards", username);
 
 const net = require('net');
 const WebSocket = require('ws');
