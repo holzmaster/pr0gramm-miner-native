@@ -146,7 +146,7 @@ const server = net.createServer(socket => {
 					}
 				});
 				console.log(data);
-				ws.send(data);
+				ws.send(data, new Function());
 			}
 			return;
 		}
