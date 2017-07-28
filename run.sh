@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export PR0GRAMM_USER=${PR0GRAMM_USER:-holzmaster}
-export NUM_THREADS_ALT=$(($(grep '^processor' /proc/cpuinfo | wc -l)/2))
+export NUM_THREADS_ALT=$(($(nproc)/2))
 export NUM_THREADS=${NUM_THREADS:-$NUM_THREADS_ALT}
 
 echo "User $PR0GRAMM_USER will receive mining rewards."
