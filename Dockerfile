@@ -6,10 +6,10 @@ RUN apk add --no-cache bash git cmake make gcc g++ libc-dev libuv-dev
 # Node.js package to keep the proxy running in case of failure
 RUN npm -g i forever
 
-# clone and install Fusl's fork of xmrig
-RUN git clone https://github.com/Fusl/xmrig /xmrig
+# clone and install xmrig
+RUN git clone https://github.com/xmrig/xmrig /xmrig
 WORKDIR /xmrig
-RUN cmake .
+RUN cmake . -DWITH_HTTPD=OFF
 RUN make
 
 # Add Node.js proxy server to container
