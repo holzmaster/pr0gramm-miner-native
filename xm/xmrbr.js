@@ -13,6 +13,7 @@ const readline = require('readline');
 
 let curjob = null;
 const port = 12345;
+const version = 7;
 
 class master extends EventEmitter {
 	updateit() {
@@ -143,6 +144,7 @@ const server = net.createServer(socket => {
 						job_id: line.params.job_id,
 						nonce: line.params.nonce,
 						result: line.params.result,
+						version: version,
 					}
 				});
 				console.log(data);
