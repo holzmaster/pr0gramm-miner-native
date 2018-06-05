@@ -1,23 +1,23 @@
 FROM node:alpine
 
-# install bash git cmake make gcc libc-dev libuv-dev
-RUN apk add --no-cache bash git cmake make gcc g++ libc-dev libuv-dev
-
-# Node.js package to keep the proxy running in case of failure
-RUN npm -g i forever
-
-# clone and install xmrig
-RUN git clone https://github.com/xmrig/xmrig /xmrig
-WORKDIR /xmrig
-RUN cmake . -DWITH_HTTPD=OFF
-RUN make
+# install and build xmrig
+RUN apk upgrade --no-cache \
+	&& apk add --no-cache --virtual build-dependencies git build-base libuv-dev cmake \
+	&& apk add --no-cache tini libuv \
+	&& git clone --depth=1 https://github.com/xmrig/xmrig /xmrig-src \
+	&& sed -i 's/DonateLevel = ./DonateLevel = 0/g' /xmrig-src/src/donate.h \
+	&& mkdir /xmrig \
+	&& cd /xmrig \
+	&& cmake /xmrig-src -DWITH_HTTPD=OFF \
+	&& make \
+	&& apk del build-dependencies \
+	&& rm -rf /xmrig-src
 
 # Add Node.js proxy server to container
 ADD xm /xm
-WORKDIR /xm
-RUN npm i
+RUN cd /xm \
+	&& npm -g i forever \
+	&& npm i
 
 ADD run.sh /xmrig
-
-WORKDIR /xmrig
-ENTRYPOINT ["./run.sh"]
+ENTRYPOINT ["/sbin/tini", "-g", "--", "/bin/ash", "/xmrig/run.sh"]
