@@ -1,5 +1,8 @@
 # pr0gramm-miner-native
 
+## Projekt Archiviert 2019-05-22
+Die Möglichkeit, zu minen, ist nun schon seit einiger Zeit abgeschaltet. Dieses Projekt ist damit hinfällig.
+
 ## Setup
 Benötigt Docker.
 
